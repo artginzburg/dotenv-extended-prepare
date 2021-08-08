@@ -1,7 +1,10 @@
 {
   "name": "dotenv-extended-prepare",
-  "version": "1.0.01",
+  "version": "1.0.2",
   "description": "A module for creating initial .env files based on .env.defaults and .env.schema from dotenv-extended",
+  "bin": {
+    "dotenv-extended-prepare": "./index.js"
+  },
   "main": "index.js",
   "engines": {
     "npm": ">=4",
