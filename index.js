@@ -8,24 +8,20 @@ const paths = {
   defaults: '.env.defaults',
 };
 
-function upsertFile(name, dataIfNotFound) {
-  const nameFromDirname = `${__dirname}/${name}`;
-
-  fs.writeFile(nameFromDirname, dataIfNotFound, { flag: 'wx' }, (err) => {
+function upsertFile(path, dataIfNotFound) {
+  fs.writeFile(path, dataIfNotFound, { flag: 'wx' }, (err) => {
     if (err) {
       return;
     }
-    console.log(`Prepared ${name} file`);
+    console.log(`Prepared ${path} file`);
   });
 }
 
 function envParse(path) {
-  const fileToRead = `${__dirname}/${path}`;
-
-  if (!fs.existsSync(fileToRead)) {
+  if (!fs.existsSync(path)) {
     return {};
   }
-  const env = fs.readFileSync(fileToRead, { encoding: 'utf-8' }).trim();
+  const env = fs.readFileSync(path, { encoding: 'utf-8' }).trim();
   const envArr = env.split('\n');
 
   let envObject = {};
@@ -54,10 +50,10 @@ function envStringifyInit(envObj) {
 
 const setAll = (obj, val) => Object.keys(obj).forEach((k) => (obj[k] = val));
 
-const envSchema = envParse(paths.envSchema);
+const envSchema = envParse(paths.schema);
 setAll(envSchema, '');
 
-const envDefaults = envParse(paths.envDefaults);
+const envDefaults = envParse(paths.defaults);
 
 const stringifiedEnv = envStringifyInit({ ...envSchema, ...envDefaults });
 
