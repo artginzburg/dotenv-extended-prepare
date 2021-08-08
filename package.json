@@ -1,17 +1,16 @@
 {
   "name": "dotenv-extended-prepare",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A module for creating initial .env files based on .env.defaults and .env.schema from dotenv-extended",
   "bin": {
-    "dotenv-extended-prepare": "./index.js"
+    "dotenv-extended-prepare": "index"
   },
-  "main": "index.js",
   "engines": {
     "npm": ">=4",
     "node": ">=6"
   },
   "scripts": {
-    "test": "node ./index.js"
+    "test": "node index"
   },
   "repository": "https://github.com/artginzburg/dotenv-extended-prepare",
   "author": "Art Ginzburg <ginzburg.arthur@gmail.com>",

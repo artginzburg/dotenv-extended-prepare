@@ -39,3 +39,11 @@ npm i -D dotenv-extended-prepare
   "prepare": "dotenv-extended-prepare"
 }
 ```
+
+### Bonuses
+
+- One-liner for adding "prepare" to `package.json`:
+
+```sh1
+node -e "let pkg=require('./package.json'); pkg.scripts.prepare=pkg.scripts.prepare??'dotenv-extended-prepare'; require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
+```
