@@ -23,7 +23,7 @@ function envParse(path) {
   const fileToRead = `${__dirname}/${path}`;
 
   if (!fs.existsSync(fileToRead)) {
-    return;
+    return {};
   }
   const env = fs.readFileSync(fileToRead, { encoding: 'utf-8' }).trim();
   const envArr = env.split('\n');
