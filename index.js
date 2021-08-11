@@ -13,7 +13,7 @@ function upsertFile(path, dataIfNotFound) {
     if (err) {
       return;
     }
-    console.log(`Prepared ${path} file`);
+    console.log(`[${process.env.npm_package_name}] Prepared ${path} file`);
   });
 }
 
@@ -27,8 +27,8 @@ function envParse(path) {
   let envObject = {};
   envArr.forEach((el) => {
     const elSplitted = el.split('=');
-    const key = elSplitted[0];
-    const value = elSplitted[1] ?? '';
+    const key = elSplitted[0].trim();
+    const value = (elSplitted[1] ?? '').trim();
     envObject[key] = value;
   });
   return envObject;
@@ -38,11 +38,13 @@ function envStringifyInit(envObj) {
   let string = '';
 
   for (const key in envObj) {
-    if (envObj[key]) {
-      string += '# ';
-    }
+    if (key) {
+      if (envObj[key]) {
+        string += '# ';
+      }
 
-    string += `${key}=\n`;
+      string += `${key}${key[0] === '#' ? '' : '='}\n`;
+    }
   }
 
   return string.trim();
