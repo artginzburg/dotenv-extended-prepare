@@ -1,7 +1,16 @@
 {
   "name": "dotenv-extended-prepare",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A module for creating initial .env files based on .env.defaults and .env.schema from dotenv-extended",
+  "license": "MIT",
+  "repository": "artginzburg/dotenv-extended-prepare",
+  "funding": "https://www.buymeacoffee.com/artginzburg",
+  "author": "Art Ginzburg <ginzburg.arthur@gmail.com>",
+  "keywords": [
+    "dotenv",
+    "environment",
+    "prepare"
+  ],
   "bin": {
     "dotenv-extended-prepare": "index.js"
   },
@@ -10,14 +19,6 @@
     "node": ">=6"
   },
   "scripts": {
-    "test": "node index"
-  },
-  "repository": "https://github.com/artginzburg/dotenv-extended-prepare",
-  "author": "Art Ginzburg <ginzburg.arthur@gmail.com>",
-  "license": "MIT",
-  "keywords": [
-    "dotenv",
-    "environment",
-    "prepare"
-  ]
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
