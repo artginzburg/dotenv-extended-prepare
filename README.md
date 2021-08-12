@@ -1,5 +1,5 @@
 # [dotenv-extended](https://www.npmjs.com/package/dotenv-extended)-prepare
-[![Dependencies](https://img.shields.io/badge/dependencies-none-green)](# "zero dependency")
+[![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# "zero dependency")
 
 I like high development convenience. Almost every new project has its .env schemas/examples/samples or defaults. Usually, after cloning a new repository, the developer has to not just enter environment variables, but also search for their names, check which ones are already set by default and create an .env file.
 
