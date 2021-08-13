@@ -1,15 +1,13 @@
 # [dotenv-extended](https://www.npmjs.com/package/dotenv-extended)-prepare
 [![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# "zero dependency")
 
-I like high development convenience. Almost every new project has its .env schemas/examples/samples or defaults. Usually, after cloning a new repository, the developer has to not just enter environment variables, but also search for their names, check which ones are already set by default and create an .env file.
-
 This package protects developers from manually doing boring stuff — isn't that what we're here for?
 
 Just run `npm i` on a new repo, and `.env` preset will be sitting in the top-level directory for you to fill it.
 
-## Preview
+> .env is created based on `.env.defaults` and `.env.schema`
 
-> The newly created `.env` file contains required variable names with `=` on line end:
+## Preview
 
 ```ps1
 NODE_ENV=
@@ -24,7 +22,7 @@ TOKEN=
 
 ## Installation
 
-### For manual usage
+### For personal usage
 
 1. Perform a global installation:
 
@@ -38,7 +36,7 @@ npm i -g dotenv-extended-prepare
 dotenv-extended-prepare
 ```
 
-### For making your own repo automatically 100% top-level
+### For automatically respecting the time of other developers
 
 1. Install `dotenv-extended-prepare` as a development dependency:
 
@@ -58,7 +56,12 @@ npm i -D dotenv-extended-prepare
 
 > If you need to specify a custom path or name to schemas/defaults, or you don't use `dotenv-extended` at all, or you prefer using regular OG `dotenv` like our grandpas did and your env sample is named `.env.example` — just wait a couple of days. I'm planning to add more names for auto-search and some configuration.
 
-### Bonuses
+## Why?
+
+I like high development convenience. Almost every new project has its .env schemas/examples/samples or defaults. Usually, after cloning a new repository, the developer has to not just enter environment variables, but also search for their names, check which ones are already set by default and create an .env file.
+
+This package is actively maintained. Give it a star, and maybe share some thoughts by opening an issue.
+## Bonuses
 
 - A safe one-liner for adding "postinstall" to `package.json`:
 
