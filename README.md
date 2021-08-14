@@ -1,11 +1,19 @@
-# [dotenv-extended](https://www.npmjs.com/package/dotenv-extended)-prepare
-[![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# "zero dependency")
+<div align="center">
 
-This package protects developers from manually doing boring stuff — isn't that what we're here for?
+  # [dotenv-extended](https://www.npmjs.com/package/dotenv-extended)-prepare
+</div>
+
+[![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# "zero dependency")
+<a href="https://www.npmjs.com/package/dotenv-extended-prepare?activeTab=versions"><img align="right" alt="npm" src="https://img.shields.io/npm/dw/dotenv-extended-prepare?labelColor=white&color=cd0d0d&logo=npm"></a>
+
+<div align="center">
+  
+Protects developers from manually doing boring stuff — isn't that what we're here for?
 
 Just run `npm i` on a new repo, and `.env` preset will be sitting in the top-level directory for you to fill it.
 
 > .env is created based on `.env.defaults` and `.env.schema`
+</div>
 
 ## Preview
 
@@ -20,7 +28,7 @@ TOKEN=
 
 > The `.env.schema` variables definitely want you to __fill them__ in.
 
-## Installation
+## Quick start
 
 ### For personal usage
 
