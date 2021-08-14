@@ -9,6 +9,8 @@
 <div align="center">
   
 Protects developers from manually doing boring stuff — isn't that what we're here for?
+  
+<br />
 
 Just run `npm i` on a new repo, and `.env` preset will be sitting in the top-level directory for you to fill it.
 
