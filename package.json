@@ -4,11 +4,24 @@
   "description": "Auto-creating .env files based on .env.defaults and .env.schema from dotenv-extended",
   "license": "MIT",
   "repository": "artginzburg/dotenv-extended-prepare",
-  "funding": "https://www.buymeacoffee.com/artginzburg",
-  "author": "Art Ginzburg <ginzburg.arthur@gmail.com>",
+  "funding": "https://github.com/artginzburg/dotenv-extended-prepare?sponsor=1",
+  "author": {
+    "name": "Art Ginzburg",
+    "email": "ginzburg.arthur@gmail.com",
+    "url": "https://ginzburg.art"
+  },
+  "files": [
+    "index.js"
+  ],
   "keywords": [
     "dotenv",
+    "env",
+    ".env",
     "environment",
+    "variables",
+    "config",
+    "settings",
+    "crossenv",
     "prepare"
   ],
   "bin": {
@@ -24,6 +37,5 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
-  },
-  "reveal": true
+  }
 }
