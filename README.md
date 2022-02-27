@@ -75,6 +75,6 @@ This package is actively maintained. Give it a star, and maybe share some though
 
 - A safe one-liner for adding "postinstall" to `package.json`:
 
-```sh1
-node -e "let pkg=require('./package.json'); pkg.scripts.postinstall=pkg.scripts.postinstall??'dotenv-extended-prepare'; require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
+```ps1
+npm set-script postinstall "dotenv-extended-prepare"
 ```
