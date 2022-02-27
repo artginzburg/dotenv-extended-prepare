@@ -1,9 +1,10 @@
 <div align="center">
 
-  # [dotenv-extended](https://www.npmjs.com/package/dotenv-extended)-prepare
+# [dotenv-extended](https://www.npmjs.com/package/dotenv-extended)-prepare
+
 </div>
 
-[![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# "zero dependency")
+[![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# 'zero dependency')
 <a href="https://www.npmjs.com/package/dotenv-extended-prepare?activeTab=versions"><img align="right" alt="npm" src="https://img.shields.io/npm/dw/dotenv-extended-prepare?labelColor=white&color=cd0d0d&logo=npm"></a>
 
 <div align="center">
@@ -12,9 +13,10 @@ Protects developers from manually doing boring stuff — isn't that what we're h
   
 <br />
 
-Just run `npm i` on a new repo, and `.env` preset will be sitting in the top-level directory for you to fill it.
+Just run it on a cloned repo, and `.env` preset will be sitting in the top-level directory for you to fill it.
 
 > .env is created based on `.env.defaults` and `.env.schema`
+
 </div>
 
 ## Preview
@@ -28,22 +30,16 @@ TOKEN=
 
 > Variables from `.env.defaults` are taken as _optional_ — commented out with `#` on line start.
 
-> The `.env.schema` variables definitely want you to __fill them__ in.
+> The `.env.schema` variables definitely want you to **fill them** in.
 
 ## Quick start
 
 ### For personal usage
 
-1. Perform a global installation:
+Simply run it after cloning another genius repo telling you to scrap around the files looking for variable names
 
 ```ps1
-npm i -g dotenv-extended-prepare
-```
-
-2. Simply run it after cloning another genius repo telling you to scrap around the files looking for variable names
-
-```ps1
-dotenv-extended-prepare
+npx dotenv-extended-prepare
 ```
 
 ### For automatically respecting the time of other developers
@@ -55,14 +51,13 @@ npm i -D dotenv-extended-prepare
 ```
 
 2. Specify a `postinstall` script in your package file — it will run on `npm i`
+   > e.g. `"scripts": { "postinstall": "dotenv-extended-prepare" }` in package.json
 
-```yml
-# package.json
-
-"scripts": {
-  "postinstall": "dotenv-extended-prepare"
-}
+```ps1
+npm set-script postinstall "dotenv-extended-prepare"
 ```
+
+#### TODO
 
 > If you need to specify a custom path or name to schemas/defaults, or you don't use `dotenv-extended` at all, or you prefer using regular OG `dotenv` like our grandpas did and your env sample is named `.env.example` — just wait a couple of days. I'm planning to add more names for auto-search and some configuration.
 
@@ -71,10 +66,3 @@ npm i -D dotenv-extended-prepare
 I like high development convenience. Almost every new project has its .env schemas/examples/samples or defaults. Usually, after cloning a new repository, the developer has to not just enter environment variables, but also search for their names, check which ones are already set by default and create an .env file.
 
 This package is actively maintained. Give it a star, and maybe share some thoughts by opening an issue.
-## Bonuses
-
-- A safe one-liner for adding "postinstall" to `package.json`:
-
-```ps1
-npm set-script postinstall "dotenv-extended-prepare"
-```
