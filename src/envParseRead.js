@@ -26,7 +26,7 @@ function readFileOrReturnEmptyObject(path) {
 function envRead(path) {
   const env = readFileOrReturnEmptyObject(path);
 
-  return envParse(env);
+  return JSON.stringify(env) === '{}' ? undefined : envParse(env);
 }
 
 module.exports = {
