@@ -11,6 +11,7 @@
     "url": "https://ginzburg.art"
   },
   "files": [
+    "src/*",
     "index.js"
   ],
   "keywords": [
@@ -25,17 +26,16 @@
     "prepare"
   ],
   "bin": {
-    "dotenv-extended-prepare": "index.js"
+    "dotenv-extended-prepare": "./index.js"
   },
   "engines": {
     "npm": ">=4",
     "node": ">=6"
   },
   "scripts": {
-    "test": "cd test && node ../",
-    "start": "cd test && nodemon --watch ../ ../"
+    "test": "cd test && ava"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "ava": "^4.0.1"
   }
 }
