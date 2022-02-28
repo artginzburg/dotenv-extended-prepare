@@ -7,7 +7,7 @@ function envParse(envString) {
   envArr.forEach((el) => {
     const elSplitted = el.split('=');
     const key = elSplitted[0].trim();
-    const value = (elSplitted[1] ?? '').trim();
+    const value = (elSplitted[1] ? elSplitted[1] : '').trim(); // ?: instead of ?? for older Node.JS versions support
     envObject[key] = value;
   });
   return envObject;
