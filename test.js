@@ -52,7 +52,9 @@ test('parses schema and defaults', (t) => {
 });
 
 test('reads/writes files', (t) => {
-  fs.rmSync(paths.env);
+  if (fs.existsSync(paths.env)) {
+    fs.rmSync(paths.env);
+  }
   const envSchema = envRead(paths.schema);
   setAll(envSchema, '');
 
