@@ -5,6 +5,7 @@
 </div>
 
 [![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](# 'zero dependency')
+[![CI](https://github.com/artginzburg/dotenv-extended-prepare/actions/workflows/test.yml/badge.svg)](https://github.com/artginzburg/dotenv-extended-prepare/actions/workflows/test.yml)
 <a href="https://www.npmjs.com/package/dotenv-extended-prepare?activeTab=versions"><img align="right" alt="npm" src="https://img.shields.io/npm/dw/dotenv-extended-prepare?labelColor=white&color=cd0d0d&logo=npm"></a>
 
 <div align="center">
