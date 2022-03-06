@@ -62,6 +62,16 @@ npm set-script postinstall "dotenv-extended-prepare"
 
 > If you need to specify a custom path or name to schemas/defaults, or you don't use `dotenv-extended` at all, or you prefer using regular OG `dotenv` like our grandpas did and your env sample is named `.env.example` — just wait a couple of days. I'm planning to add more names for auto-search and some configuration.
 
+## Experimental
+
+Auto-generate `.env.schema` if a repo doesn't specify one
+
+> In the future, we could make it also generate .env.defaults
+
+```ps1
+npx dotenv-extended-prepare generate
+```
+
 ## Why?
 
 I like high development convenience. Almost every new project has its .env schemas/examples/samples or defaults. Usually, after cloning a new repository, the developer has to not just enter environment variables, but also search for their names, check which ones are already set by default and create an .env file.
