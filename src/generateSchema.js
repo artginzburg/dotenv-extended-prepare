@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-const { envStringifyInit } = require('./envStringifyInit');
-
 const ignoredFilenames = [
   '.git',
   '.gitignore',
@@ -35,7 +33,25 @@ function findEnvVariables() {
     }
   }
 
-  const keysFound = new Set();
+  const keysFound = {};
+
+  function setKeyValueOfKeysFound(key, value = '') {
+    keysFound[key.trim()] = value.trim();
+  }
+
+  function addDestructuredEnvKeyToKeysFound(key) {
+    const defaultValueDelimiter = '=';
+    if (key.includes(defaultValueDelimiter)) {
+      const [actualKey, value] = key.split(defaultValueDelimiter);
+      setKeyValueOfKeysFound(actualKey, value);
+      return;
+    }
+    setKeyValueOfKeysFound(key);
+  }
+
+  function addClassicEnvKeyToKeysFound(key) {
+    setKeyValueOfKeysFound(key);
+  }
 
   for (const key in files) {
     if (Object.hasOwnProperty.call(files, key)) {
@@ -43,40 +59,34 @@ function findEnvVariables() {
       console.log(`Matching ${key} with RegExps...`);
 
       const destructured = element.matchAll(/\{(?<keyName>[^}]*)\}\s*=\s*process\.env(.*)+$/gm);
-      for (let result of destructured) {
-        let { keyName } = result.groups;
+      for (const {
+        groups: { keyName },
+      } of destructured) {
         console.log('Found in destructuring:', keyName);
-        if (keyName.includes(',')) {
-          const cleanKeyNames = keyName.split(',').map((item) => item.trim());
-          cleanKeyNames.forEach((cleanKeyName) => {
-            keysFound.add(cleanKeyName);
-          });
+        const separateValueDelimiter = ',';
+        if (keyName.includes(separateValueDelimiter)) {
+          const cleanKeyNames = keyName.split(separateValueDelimiter);
+          cleanKeyNames.forEach(addDestructuredEnvKeyToKeysFound);
         } else {
-          keysFound.add(keyName.trim());
+          addDestructuredEnvKeyToKeysFound(keyName);
         }
       }
 
       const classic = element.matchAll(/process\.env\.(?<keyName>[\w\d]+)(.*)+$/gm);
-      for (let result of classic) {
-        let { keyName } = result.groups;
+      for (const {
+        groups: { keyName },
+      } of classic) {
         console.log('Found in classic vars:', keyName);
-        keysFound.add(keyName.trim());
+        addClassicEnvKeyToKeysFound(keyName);
       }
     }
   }
 
   console.log('KEYS FOUND:', keysFound);
 
-  return Array.from(keysFound);
-}
-
-function generateSchema(keysFound) {
-  const schemaObj = Object.fromEntries(keysFound.map((item) => ([item, ''])));
-  const schema = envStringifyInit(schemaObj);
-  return schema;
+  return keysFound;
 }
 
 module.exports = {
   findEnvVariables,
-  generateSchema,
 };
