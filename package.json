@@ -33,6 +33,7 @@
     "node": ">=6"
   },
   "scripts": {
+    "start": "cd test && ava --watch",
     "test": "cd test && ava"
   },
   "devDependencies": {
