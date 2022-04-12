@@ -6,7 +6,7 @@ const ignoredFilenames = [
   '.gitattributes',
   'package.json',
   'package-lock.json',
-  'node_modules',
+  '*/node_modules',
 ];
 
 function findEnvVariables() {
@@ -16,6 +16,7 @@ function findEnvVariables() {
   const files = {};
   for (const fileName of fileNames) {
     if (ignoredFilenames.find((ignoredFilename) => ignoredFilename === fileName)) continue; // if fileName exactly matches any ignored one — skip it
+    if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) continue; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
 
     try {
       const file = fs.readFileSync(`${dirname}/${fileName}`, 'utf8');
