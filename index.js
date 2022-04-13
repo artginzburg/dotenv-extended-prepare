@@ -8,8 +8,8 @@ const { upsertFile } = require('./src/upsertFile');
 
 const { findEnvVariables } = require('./src/generateSchema');
 
-function generateEnvSchema() {
-  const found = findEnvVariables();
+async function generateEnvSchema() {
+  const found = await findEnvVariables();
   setAll(found, ''); // TODO remove when .env.defaults generation is implemented
 
   const schema = envStringifyInit(found);

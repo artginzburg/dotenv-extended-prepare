@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+const deepReadDir = require('./deepReadDir.js');
+
 const ignoredFilenames = [
   '.git',
   '.gitignore',
@@ -9,8 +11,8 @@ const ignoredFilenames = [
   '*/node_modules',
 ];
 
-function findEnvVariables() {
-  const files = readdirNestedCustom();
+async function findEnvVariables() {
+  const files = await readDirFiles(process.cwd());
 
   const keysFound = {};
 
@@ -66,62 +68,30 @@ function findEnvVariables() {
   return keysFound;
 }
 
-function readdirNestedCustom() {
-  // Last test duration: 1:32.061 (m:ss.mmm)
-  // Note: the test was using fs/promises instead of fs.
-  // Test without promises gave 1:08.739 (much less, for some reason).
-  const dirname = process.cwd();
-  const fileNames = fs.readdirSync(dirname);
+async function readDirFiles(directory) {
+  const fileNames = await deepReadDir(directory);
 
+  return readFiles(fileNames.flat(Number.POSITIVE_INFINITY));
+}
+
+function readFiles(fileNames) {
   const files = {};
-  for (const fileName of fileNames) {
-    if (ignoredFilenames.find((ignoredFilename) => ignoredFilename === fileName)) continue; // if fileName exactly matches any ignored one — skip it
-    if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) continue; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
 
-    try {
-      const file = fs.readFileSync(`${dirname}/${fileName}`, 'utf8');
-      files[fileName] = file;
-    } catch (error) {
-      if (error.code === 'EISDIR') {
-        // console.log(
-        //   `${fileName} is a directory — Adding the directory contents to the parsing loop...`,
-        // );
-        const nextFileNames = fs.readdirSync(`${dirname}/${fileName}`);
-        fileNames.push(...nextFileNames.map((name) => `${fileName}/${name}`));
-      } else {
-        // console.log(`Failed to read ${fileName}!`, error);
-      }
-    }
+  for (const fileName of fileNames.flat(Number.POSITIVE_INFINITY)) {
+    if (shouldExclude(fileName)) continue;
+
+    const file = fs.readFileSync(fileName, 'utf8');
+    files[fileName] = file;
   }
 
   return files;
 }
 
-// async function readdirNestedDependent() {
-//   // Last test duration: 1:35.458 (m:ss.mmm)
-//   const rra = require('recursive-readdir-async');
-
-//   const dirname = process.cwd();
-//   const filesWithContent = await rra.list(dirname, {
-//     readContent: true,
-//     exclude: ignoredFilenames,
-//   });
-
-//   const files = {};
-
-//   for (const file of filesWithContent) {
-//     files[file.path] = base64Decode(file.data);
-//   }
-
-//   return files;
-// }
-
-// /**
-//  * An {@link atob} implementation that is not deprecated.
-//  */
-// function base64Decode(data) {
-//   return Buffer.from(data, 'base64').toString();
-// }
+function shouldExclude(fileName) {
+  if (ignoredFilenames.find((ignoredFilename) => ignoredFilename === fileName)) return true; // if fileName exactly matches any ignored one — skip it
+  if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) return true; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
+  return false;
+}
 
 module.exports = {
   findEnvVariables,
