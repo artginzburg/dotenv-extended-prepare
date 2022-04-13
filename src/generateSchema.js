@@ -1,6 +1,5 @@
-const fs = require('fs');
-
 const deepReadDir = require('./deepReadDir.js');
+const readFilesQueued = require('./readFilesQueued.js');
 
 const ignoredFilenames = [
   '.git',
@@ -71,20 +70,7 @@ async function findEnvVariables() {
 async function readDirFiles(directory) {
   const fileNames = await deepReadDir(directory);
 
-  return readFiles(fileNames.flat(Number.POSITIVE_INFINITY));
-}
-
-function readFiles(fileNames) {
-  const files = {};
-
-  for (const fileName of fileNames.flat(Number.POSITIVE_INFINITY)) {
-    if (shouldExclude(fileName)) continue;
-
-    const file = fs.readFileSync(fileName, 'utf8');
-    files[fileName] = file;
-  }
-
-  return files;
+  return readFilesQueued(fileNames.flat(Number.POSITIVE_INFINITY).filter((fileName) => !shouldExclude(fileName)));
 }
 
 function shouldExclude(fileName) {
