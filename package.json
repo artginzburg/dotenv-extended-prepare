@@ -1,6 +1,6 @@
 {
   "name": "dotenv-extended-prepare",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Auto-creating .env files based on .env.defaults and .env.schema from dotenv-extended",
   "license": "MIT",
   "repository": "artginzburg/dotenv-extended-prepare",
