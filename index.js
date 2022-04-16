@@ -28,8 +28,15 @@ function generateEnv() {
   upsertFile(paths.env, stringifiedEnv);
 }
 
+function outputVersion() {
+  // This is for development purposes, so that we can quickly determine if the development version is `npm link`ed 
+  console.log(`v${require('./package.json').version}`);
+}
+
 const lastArgument = process.argv[process.argv.length - 1];
-if (lastArgument === 'generate') {
+if (lastArgument === 'version') {
+  outputVersion()
+} else if (lastArgument === 'generate') {
   generateEnvSchema();
 } else {
   generateEnv();
