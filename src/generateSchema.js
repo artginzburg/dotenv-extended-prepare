@@ -70,7 +70,9 @@ async function findEnvVariables() {
 async function readDirFiles(directory) {
   const fileNames = await deepReadDir(directory);
 
-  return readFilesQueued(fileNames.flat(Number.POSITIVE_INFINITY).filter((fileName) => !shouldExclude(fileName)));
+  const readerFunc = readFilesQueued; // TODO make this a class in the future, so that function that reads files can be really passed to constructor.
+
+  return readerFunc(fileNames.flat(Number.POSITIVE_INFINITY).filter((fileName) => !shouldExclude(fileName)));
 }
 
 function shouldExclude(fileName) {
