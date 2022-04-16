@@ -5,21 +5,39 @@ const { envRead } = require('./src/envParseRead');
 const { envStringifyInit } = require('./src/envStringifyInit');
 const { setAll } = require('./src/setAll');
 const { upsertFile } = require('./src/upsertFile');
-const { findEnvVariables, generateSchema } = require('./src/generateSchema');
 
-const lastArgument = process.argv[process.argv.length - 1];
-if (lastArgument === 'generate') {
-  const found = findEnvVariables();
-  const schema = generateSchema(found);
+const { findEnvVariables } = require('./src/generateSchema');
+
+async function generateEnvSchema() {
+  const found = await findEnvVariables();
+  setAll(found, ''); // TODO remove when .env.defaults generation is implemented
+
+  const schema = envStringifyInit(found);
+
   upsertFile(paths.schema, schema);
-  return;
 }
 
-const envSchema = envRead(paths.schema);
-setAll(envSchema, '');
+function generateEnv() {
+  const envSchema = envRead(paths.schema);
+  setAll(envSchema, '');
+  
+  const envDefaults = envRead(paths.defaults);
+  
+  const stringifiedEnv = envStringifyInit({ ...envSchema, ...envDefaults });
+  
+  upsertFile(paths.env, stringifiedEnv);
+}
 
-const envDefaults = envRead(paths.defaults);
+function outputVersion() {
+  // This is for development purposes, so that we can quickly determine if the development version is `npm link`ed 
+  console.log(`v${require('./package.json').version}`);
+}
 
-const stringifiedEnv = envStringifyInit({ ...envSchema, ...envDefaults });
-
-upsertFile(paths.env, stringifiedEnv);
+const lastArgument = process.argv[process.argv.length - 1];
+if (lastArgument === 'version') {
+  outputVersion()
+} else if (lastArgument === 'generate') {
+  generateEnvSchema();
+} else {
+  generateEnv();
+}

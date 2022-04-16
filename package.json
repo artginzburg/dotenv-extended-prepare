@@ -1,6 +1,6 @@
 {
   "name": "dotenv-extended-prepare",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Auto-creating .env files based on .env.defaults and .env.schema from dotenv-extended",
   "license": "MIT",
   "repository": "artginzburg/dotenv-extended-prepare",
@@ -33,9 +33,13 @@
     "node": ">=6"
   },
   "scripts": {
+    "start": "cd test && ava --watch",
     "test": "cd test && ava"
   },
   "devDependencies": {
     "ava": "^4.0.1"
+  },
+  "dependencies": {
+    "cwait": "^1.1.2"
   }
 }

@@ -1,6 +1,5 @@
-const fs = require('fs');
-
-const { envStringifyInit } = require('./envStringifyInit');
+const deepReadDir = require('./deepReadDir.js');
+const readFilesQueued = require('./readFilesQueued.js');
 
 const ignoredFilenames = [
   '.git',
@@ -8,34 +7,31 @@ const ignoredFilenames = [
   '.gitattributes',
   'package.json',
   'package-lock.json',
-  'node_modules',
+  '*/node_modules',
 ];
 
-function findEnvVariables() {
-  const dirname = process.cwd();
-  const fileNames = fs.readdirSync(dirname);
+async function findEnvVariables() {
+  const files = await readDirFiles(process.cwd());
 
-  const files = {};
-  for (const fileName of fileNames) {
-    if (ignoredFilenames.find((ignoredFilename) => ignoredFilename === fileName)) continue; // if fileName exactly matches any ignored one — skip it
+  const keysFound = {};
 
-    try {
-      const file = fs.readFileSync(`${dirname}/${fileName}`, 'utf8');
-      files[fileName] = file;
-    } catch (error) {
-      if (error.code === 'EISDIR') {
-        console.log(
-          `${fileName} is a directory — Adding the directory contents to the parsing loop...`,
-        );
-        const nextFileNames = fs.readdirSync(`${dirname}/${fileName}`);
-        fileNames.push(...nextFileNames.map((name) => `${fileName}/${name}`));
-      } else {
-        console.log(`Failed to read ${fileName}!`, error);
-      }
-    }
+  function setKeyValueOfKeysFound(key, value = '') {
+    keysFound[key.trim()] = value.trim();
   }
 
-  const keysFound = new Set();
+  function addDestructuredEnvKeyToKeysFound(key) {
+    const defaultValueDelimiter = '=';
+    if (key.includes(defaultValueDelimiter)) {
+      const [actualKey, value] = key.split(defaultValueDelimiter);
+      setKeyValueOfKeysFound(actualKey, value);
+      return;
+    }
+    setKeyValueOfKeysFound(key);
+  }
+
+  function addClassicEnvKeyToKeysFound(key) {
+    setKeyValueOfKeysFound(key);
+  }
 
   for (const key in files) {
     if (Object.hasOwnProperty.call(files, key)) {
@@ -43,40 +39,48 @@ function findEnvVariables() {
       console.log(`Matching ${key} with RegExps...`);
 
       const destructured = element.matchAll(/\{(?<keyName>[^}]*)\}\s*=\s*process\.env(.*)+$/gm);
-      for (let result of destructured) {
-        let { keyName } = result.groups;
+      for (const {
+        groups: { keyName },
+      } of destructured) {
         console.log('Found in destructuring:', keyName);
-        if (keyName.includes(',')) {
-          const cleanKeyNames = keyName.split(',').map((item) => item.trim());
-          cleanKeyNames.forEach((cleanKeyName) => {
-            keysFound.add(cleanKeyName);
-          });
+        const separateValueDelimiter = ',';
+        if (keyName.includes(separateValueDelimiter)) {
+          const cleanKeyNames = keyName.split(separateValueDelimiter);
+          cleanKeyNames.forEach(addDestructuredEnvKeyToKeysFound);
         } else {
-          keysFound.add(keyName.trim());
+          addDestructuredEnvKeyToKeysFound(keyName);
         }
       }
 
       const classic = element.matchAll(/process\.env\.(?<keyName>[\w\d]+)(.*)+$/gm);
-      for (let result of classic) {
-        let { keyName } = result.groups;
+      for (const {
+        groups: { keyName },
+      } of classic) {
         console.log('Found in classic vars:', keyName);
-        keysFound.add(keyName.trim());
+        addClassicEnvKeyToKeysFound(keyName);
       }
     }
   }
 
   console.log('KEYS FOUND:', keysFound);
 
-  return Array.from(keysFound);
+  return keysFound;
 }
 
-function generateSchema(keysFound) {
-  const schemaObj = Object.fromEntries(keysFound.map((item) => ([item, ''])));
-  const schema = envStringifyInit(schemaObj);
-  return schema;
+async function readDirFiles(directory) {
+  const fileNames = await deepReadDir(directory);
+
+  const readerFunc = readFilesQueued; // TODO make this a class in the future, so that function that reads files can be really passed to constructor.
+
+  return readerFunc(fileNames.flat(Number.POSITIVE_INFINITY).filter((fileName) => !shouldExclude(fileName)));
+}
+
+function shouldExclude(fileName) {
+  if (ignoredFilenames.find((ignoredFilename) => ignoredFilename === fileName)) return true; // if fileName exactly matches any ignored one — skip it
+  if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) return true; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
+  return false;
 }
 
 module.exports = {
   findEnvVariables,
-  generateSchema,
 };
