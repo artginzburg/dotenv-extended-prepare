@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "checkJs": true,
+    "lib": ["ES2021"],
     "noUnusedLocals": true
   }
 }
