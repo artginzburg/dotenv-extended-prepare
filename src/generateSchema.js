@@ -8,6 +8,7 @@ const ignoredFilenames = [
   'package.json',
   'package-lock.json',
   '*/node_modules',
+  // TODO? Maybe shouldn't scan .json at all (like Babel source maps). Or maybe anything other than JS-like extensions. I think it's better to not exclude them by default, but leave a mention somewhere in the docs.
 ];
 
 async function findEnvVariables() {
@@ -23,10 +24,10 @@ async function findEnvVariables() {
     const defaultValueDelimiter = '=';
     if (key.includes(defaultValueDelimiter)) {
       const [actualKey, value] = key.split(defaultValueDelimiter);
-      setKeyValueOfKeysFound(handleDestructuredRenaming(actualKey), value);
+      setKeyValueOfKeysFound(handleDestructuredRenaming(handleDestructuredPlainNewlines(actualKey)), value);
       return;
     }
-    setKeyValueOfKeysFound(handleDestructuredRenaming(key));
+    setKeyValueOfKeysFound(handleDestructuredRenaming(handleDestructuredPlainNewlines(key)));
   }
 
   function handleDestructuredRenaming(possiblyRenamedKey) {
@@ -36,6 +37,15 @@ async function findEnvVariables() {
       return keyWithoutRename;
     }
     return possiblyRenamedKey;
+  }
+
+  /** Handles \n inside env keys of files like Babel .json source maps */
+  function handleDestructuredPlainNewlines(possiblyKeyWithNewline) {
+    const newlineCharacter = '\\n';
+    if (possiblyKeyWithNewline.includes(newlineCharacter)) {
+      return possiblyKeyWithNewline.replaceAll(newlineCharacter, '');
+    }
+    return possiblyKeyWithNewline;
   }
 
   function addClassicEnvKeyToKeysFound(key) {
@@ -48,7 +58,6 @@ async function findEnvVariables() {
       // console.log(`Matching ${key} with RegExps...`);
 
       const destructured = element.matchAll(/\{(?<keyName>[^{}]*)\}\s*=\s*process\.env(.*)+$/gm);
-      // TODO? if this gives something like `\\n  NODE_ENV\\n` — that's means that the newlines are actually there in text, since we are using multiline RegExp. A good example — if you scan the Babel source map files. They often have `.json` extension. To solve this, we either need to exclude `.json` files from the scan, or use `.replace(/\\n/g, '')` to remove the newlines.
       for (const {
         groups: { keyName },
       } of destructured) {
