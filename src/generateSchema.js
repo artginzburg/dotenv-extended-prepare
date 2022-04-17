@@ -21,13 +21,20 @@ async function findEnvVariables() {
   }
 
   function addDestructuredEnvKeyToKeysFound(key) {
+    const [handledKey, value] = handleDestructuredDefaultValues(key);
+    setKeyValueOfKeysFound(
+      handleDestructuredRenaming(handleDestructuredPlainNewlines(handledKey)),
+      value
+    );
+  }
+
+  function handleDestructuredDefaultValues(key) {
     const defaultValueDelimiter = '=';
     if (key.includes(defaultValueDelimiter)) {
       const [actualKey, value] = key.split(defaultValueDelimiter);
-      setKeyValueOfKeysFound(handleDestructuredRenaming(handleDestructuredPlainNewlines(actualKey)), value);
-      return;
+      return [actualKey, value];
     }
-    setKeyValueOfKeysFound(handleDestructuredRenaming(handleDestructuredPlainNewlines(key)));
+    return [key];
   }
 
   function handleDestructuredRenaming(possiblyRenamedKey) {
