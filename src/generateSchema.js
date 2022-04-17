@@ -45,7 +45,7 @@ async function findEnvVariables() {
   for (const key in files) {
     if (Object.hasOwnProperty.call(files, key)) {
       const element = files[key];
-      console.log(`Matching ${key} with RegExps...`);
+      // console.log(`Matching ${key} with RegExps...`);
 
       const destructured = element.matchAll(/\{(?<keyName>[^{}]*)\}\s*=\s*process\.env(.*)+$/gm);
       // TODO? if this gives something like `\\n  NODE_ENV\\n` — that's means that the newlines are actually there in text, since we are using multiline RegExp. A good example — if you scan the Babel source map files. They often have `.json` extension. To solve this, we either need to exclude `.json` files from the scan, or use `.replace(/\\n/g, '')` to remove the newlines.
