@@ -38,7 +38,7 @@ async function findEnvVariables() {
       const element = files[key];
       console.log(`Matching ${key} with RegExps...`);
 
-      const destructured = element.matchAll(/\{(?<keyName>[^}]*)\}\s*=\s*process\.env(.*)+$/gm);
+      const destructured = element.matchAll(/\{(?<keyName>[^{}]*)\}\s*=\s*process\.env(.*)+$/gm);
       for (const {
         groups: { keyName },
       } of destructured) {
