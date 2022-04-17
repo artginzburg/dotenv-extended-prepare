@@ -23,10 +23,19 @@ async function findEnvVariables() {
     const defaultValueDelimiter = '=';
     if (key.includes(defaultValueDelimiter)) {
       const [actualKey, value] = key.split(defaultValueDelimiter);
-      setKeyValueOfKeysFound(actualKey, value);
+      setKeyValueOfKeysFound(handleDestructuredRenaming(actualKey), value);
       return;
     }
-    setKeyValueOfKeysFound(key);
+    setKeyValueOfKeysFound(handleDestructuredRenaming(key));
+  }
+
+  function handleDestructuredRenaming(possiblyRenamedKey) {
+    const renamingDelimiter = ':';
+    if (possiblyRenamedKey.includes(renamingDelimiter)) {
+      const [keyWithoutRename] = possiblyRenamedKey.split(renamingDelimiter);
+      return keyWithoutRename;
+    }
+    return possiblyRenamedKey;
   }
 
   function addClassicEnvKeyToKeysFound(key) {
