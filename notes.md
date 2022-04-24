@@ -3,4 +3,5 @@ This library takes schemas (and part of the name) from [`dotenv-extended`](https
 ## Recommended packages
 
 [`dotenv-expand`](https://npm.im/dotenv-expand) — Expand environment variables using dotenv
+
 [`crossenv`](https://npm.im/cross-env) — Run scripts that set and use environment variables across platforms
