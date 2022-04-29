@@ -2,6 +2,7 @@
   "compilerOptions": {
     "checkJs": true,
     "lib": ["ES2021"],
+    "resolveJsonModule": true,
     "noUnusedLocals": true
   }
 }

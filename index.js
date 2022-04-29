@@ -4,17 +4,24 @@ const { paths } = require('./src/config');
 const { envRead } = require('./src/envParseRead');
 const { envStringifyInit } = require('./src/envStringifyInit');
 const { setAll } = require('./src/setAll');
+const { filterObject } = require('./src/filterObject');
 const { upsertFile } = require('./src/upsertFile');
 
 const { findEnvVariables } = require('./src/generateSchema');
 
 async function generateEnvSchema() {
   const found = await findEnvVariables();
-  setAll(found, ''); // TODO remove when .env.defaults generation is implemented
 
-  const schema = envStringifyInit(found);
+  const schemaForGeneration = {...found};
+  setAll(schemaForGeneration, '');
+  const defaultsForGeneration = {...found};
+  filterObject(defaultsForGeneration, (value) => value !== '');
+
+  const schema = envStringifyInit(schemaForGeneration);
+  const defaults = envStringifyInit(defaultsForGeneration, true);
 
   upsertFile(paths.schema, schema);
+  upsertFile(paths.defaults, defaults);
 }
 
 function generateEnv() {
