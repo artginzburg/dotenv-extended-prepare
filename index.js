@@ -27,16 +27,16 @@ async function generateEnvSchema() {
 function generateEnv() {
   const envSchema = envRead(paths.schema);
   setAll(envSchema, '');
-  
+
   const envDefaults = envRead(paths.defaults);
-  
+
   const stringifiedEnv = envStringifyInit({ ...envSchema, ...envDefaults });
-  
+
   upsertFile(paths.env, stringifiedEnv);
 }
 
 function outputVersion() {
-  // This is for development purposes, so that we can quickly determine if the development version is `npm link`ed 
+  // This is for development purposes, so that we can quickly determine if the development version is `npm link`ed
   console.log(`v${require('./package.json').version}`);
 }
 
