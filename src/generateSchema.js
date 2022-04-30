@@ -1,5 +1,5 @@
-const deepReadDir = require('./deepReadDir.js');
-const readFilesQueued = require('./readFilesQueued.js');
+const deepReadDir = require('./deepReadDir');
+const readFilesQueued = require('./readFilesQueued');
 
 const ignoredFilenames = [
   '.git',

@@ -8,5 +8,13 @@
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "rules": {}
+  "rules": {
+    "max-len": "off", // I don't care about line length
+    "no-console": "off", // I need `console.log`s for CLI output, obviously.
+    "global-require": "off", // It is a bad practice, but it's OK until we move this package to ES modules.
+    "no-param-reassign": "off", // It is a useful feature if you know what you're doing.
+    "no-restricted-syntax": "off", // for..in loops and similar iterators are just faster than array iterations.
+    "import/no-unresolved": "off", // This never works as expected for me. E.g. it says "Unable to resolve path to module 'ava'"
+    "no-use-before-define": ["error", "nofunc"] // functions are hoisted, so it's safe (from ESLint docs), and helps with readability,
+  }
 }

@@ -5,7 +5,7 @@ function upsertFile(path, dataIfNotFound) {
     fs.writeFileSync(path, dataIfNotFound, { flag: 'wx' });
     console.log(`[${process.env.npm_package_name}] Prepared ${path} file`);
   } catch (error) {
-
+    // It's ok, just means the file already exists.
   }
 }
 
