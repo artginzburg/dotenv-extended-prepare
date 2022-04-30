@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 // Idk how useless the escapes are here, need to check later.
-const test = require('ava');
+const test = require('ava').default;
 
 const fs = require('fs');
 
