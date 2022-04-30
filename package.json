@@ -35,7 +35,7 @@
   "scripts": {
     "start": "cd test && ava --watch",
     "test": "cd test && ava",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix --ext .js,.cjs"
   },
   "dependencies": {
     "cwait": "^1.1.2"
