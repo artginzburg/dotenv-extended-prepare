@@ -13,7 +13,7 @@ async function readFilesQueued(fileNames) {
     fileNames.map(async (fileName) => {
       const file = await read(fileName, 'utf8');
       files[fileName] = file;
-    })
+    }),
   );
 
   return files;

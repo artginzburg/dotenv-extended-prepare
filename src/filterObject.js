@@ -3,9 +3,9 @@ function filterObject(obj, predicate) {
     if (!predicate(obj[k])) {
       delete obj[k];
     }
-  })
+  });
 }
 
 module.exports = {
   filterObject,
-}
+};

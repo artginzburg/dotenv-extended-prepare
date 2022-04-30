@@ -12,9 +12,9 @@ const { findEnvVariables } = require('./src/generateSchema');
 async function generateEnvSchema() {
   const found = await findEnvVariables();
 
-  const schemaForGeneration = {...found};
+  const schemaForGeneration = { ...found };
   setAll(schemaForGeneration, '');
-  const defaultsForGeneration = {...found};
+  const defaultsForGeneration = { ...found };
   filterObject(defaultsForGeneration, (value) => value !== '');
 
   const schema = envStringifyInit(schemaForGeneration);
@@ -42,7 +42,7 @@ function outputVersion() {
 
 const lastArgument = process.argv[process.argv.length - 1];
 if (lastArgument === 'version') {
-  outputVersion()
+  outputVersion();
 } else if (lastArgument === 'generate') {
   generateEnvSchema();
 } else {

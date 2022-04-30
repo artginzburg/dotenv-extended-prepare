@@ -34,10 +34,14 @@
   },
   "scripts": {
     "start": "cd test && ava --watch",
-    "test": "cd test && ava"
+    "test": "cd test && ava",
+    "lint": "eslint . --fix"
   },
   "devDependencies": {
-    "ava": "^4.0.1"
+    "ava": "^4.0.1",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
   },
   "dependencies": {
     "cwait": "^1.1.2"

@@ -3,7 +3,7 @@ const fs = require('fs');
 function envParse(envString) {
   const envArr = envString.trim().split('\n');
 
-  let envObject = {};
+  const envObject = {};
   envArr.forEach((el) => {
     const elSplitted = el.split('=');
     const key = elSplitted[0].trim();

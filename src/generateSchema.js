@@ -24,7 +24,7 @@ async function findEnvVariables() {
     const [handledKey, value] = handleDestructuredDefaultValues(key);
     setKeyValueOfKeysFound(
       handleDestructuredRenaming(handleDestructuredPlainNewlines(handledKey)),
-      value
+      value,
     );
   }
 

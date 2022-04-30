@@ -26,4 +26,4 @@ test("ignores (doesn't throw on) undefined", (t) => {
   setAll(objectToMutate, valueToSet);
 
   t.is(objectToMutate, undefined);
-})
+});
