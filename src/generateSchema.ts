@@ -61,11 +61,12 @@ export async function findEnvVariables() {
 
   for (const key in files) {
     if (Object.hasOwnProperty.call(files, key)) {
-      const element = files[key];
+      const element: string = files[key];
       // console.log(`Matching ${key} with RegExps...`);
 
       const destructured = element.matchAll(/\{(?<keyName>[^{}]*)\}\s*=\s*process\.env(.*)+$/gm);
       for (const {
+        // @ts-expect-error keyName exists. If it does not, then `destructured` would contain nothing, meaning that the loop wouldn't execute.
         groups: { keyName },
       } of destructured) {
         console.log('Found in destructuring:', keyName);
@@ -80,6 +81,7 @@ export async function findEnvVariables() {
 
       const classic = element.matchAll(/process\.env\.(?<keyName>[\w\d]+)(.*)+$/gm);
       for (const {
+        // @ts-expect-error keyName exists. If it does not, then `destructured` would contain nothing, meaning that the loop wouldn't execute.
         groups: { keyName },
       } of classic) {
         console.log('Found in classic vars:', keyName);

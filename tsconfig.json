@@ -7,6 +7,7 @@
     "lib": ["ES2021"],
     "resolveJsonModule": true,
     "noUnusedLocals": true,
+    "downlevelIteration": true,
 
     // Production
     "noEmit": false,
