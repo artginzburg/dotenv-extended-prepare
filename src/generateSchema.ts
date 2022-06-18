@@ -1,5 +1,5 @@
-const deepReadDir = require('./deepReadDir');
-const readFilesQueued = require('./readFilesQueued');
+import deepReadDir from './deepReadDir';
+import readFilesQueued from './readFilesQueued';
 
 const ignoredFilenames = [
   '.git',
@@ -11,7 +11,7 @@ const ignoredFilenames = [
   // TODO? Maybe shouldn't scan .json at all (like Babel source maps). Or maybe anything other than JS-like extensions. I think it's better to not exclude them by default, but leave a mention somewhere in the docs.
 ];
 
-async function findEnvVariables() {
+export async function findEnvVariables() {
   const files = await readDirFiles(process.cwd());
 
   const keysFound = {};
@@ -106,7 +106,3 @@ function shouldExclude(fileName) {
   if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) return true; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
   return false;
 }
-
-module.exports = {
-  findEnvVariables,
-};

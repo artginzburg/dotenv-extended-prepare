@@ -1,4 +1,4 @@
-function envStringifyInit(envObj, preserveValues = false) {
+export function envStringifyInit<T>(envObj: Record<string, T>, preserveValues = false) {
   let string = '';
 
   for (const key in envObj) {
@@ -13,7 +13,3 @@ function envStringifyInit(envObj, preserveValues = false) {
 
   return string.trim();
 }
-
-module.exports = {
-  envStringifyInit,
-};

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-const { paths } = require('./src/config');
-const { envRead } = require('./src/envParseRead');
-const { envStringifyInit } = require('./src/envStringifyInit');
-const { setAll } = require('./src/setAll');
-const { filterObject } = require('./src/filterObject');
-const { upsertFile } = require('./src/upsertFile');
+import { paths } from './src/config';
+import { envRead } from './src/envParseRead';
+import { envStringifyInit } from './src/envStringifyInit';
+import { setAll } from './src/setAll';
+import { filterObject } from './src/filterObject';
+import { upsertFile } from './src/upsertFile';
 
-const { findEnvVariables } = require('./src/generateSchema');
+import { findEnvVariables } from './src/generateSchema';
 
 async function generateEnvSchema() {
   const found = await findEnvVariables();
@@ -26,6 +26,7 @@ async function generateEnvSchema() {
 
 function generateEnv() {
   const envSchema = envRead(paths.schema);
+  // @ts-expect-error todo
   setAll(envSchema, '');
 
   const envDefaults = envRead(paths.defaults);
@@ -35,9 +36,9 @@ function generateEnv() {
   upsertFile(paths.env, stringifiedEnv);
 }
 
-function outputVersion() {
+async function outputVersion() {
   // This is for development purposes, so that we can quickly determine if the development version is `npm link`ed
-  console.log(`v${require('./package.json').version}`);
+  console.log(`v${(await import('./package.json')).version}`);
 }
 
 const lastArgument = process.argv[process.argv.length - 1];

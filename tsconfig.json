@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.cra.json",
+  "compilerOptions": {
+    "checkJs": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "lib": ["ES2021"],
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+
+    // Production
+    "noEmit": false,
+    "outDir": "dist",
+    "module": "commonjs"
+  },
+  "include": ["src", "index.test.ts", "index.ts"]
+}

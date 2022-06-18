@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-function upsertFile(path, dataIfNotFound) {
+export function upsertFile(path: fs.PathOrFileDescriptor, dataIfNotFound: string | NodeJS.ArrayBufferView) {
   try {
     fs.writeFileSync(path, dataIfNotFound, { flag: 'wx' });
     console.log(`[${process.env.npm_package_name}] Prepared ${path} file`);
@@ -8,7 +8,3 @@ function upsertFile(path, dataIfNotFound) {
     // It's ok, just means the file already exists.
   }
 }
-
-module.exports = {
-  upsertFile,
-};

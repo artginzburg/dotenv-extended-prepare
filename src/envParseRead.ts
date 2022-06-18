@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-function envParse(envString) {
+export function envParse(envString) {
   const envArr = envString.trim().split('\n');
 
   const envObject = {};
@@ -13,7 +13,7 @@ function envParse(envString) {
   return envObject;
 }
 
-function readFileOrReturnEmptyObject(path) {
+export function readFileOrReturnEmptyObject(path) {
   if (!fs.existsSync(path)) {
     return {};
   }
@@ -23,14 +23,8 @@ function readFileOrReturnEmptyObject(path) {
   return env;
 }
 
-function envRead(path) {
+export function envRead(path: string) {
   const env = readFileOrReturnEmptyObject(path);
 
   return JSON.stringify(env) === '{}' ? undefined : envParse(env);
 }
-
-module.exports = {
-  envParse,
-  readFileOrReturnEmptyObject,
-  envRead,
-};

@@ -1,6 +1,6 @@
-const test = require('ava').default;
+import test from 'ava';
 
-const { setAll } = require('./setAll');
+import { setAll } from './setAll';
 
 test('sets all keys of an object to the same value', (t) => {
   const objectToMutate = {
@@ -23,6 +23,7 @@ test('sets all keys of an object to the same value', (t) => {
 test("ignores (doesn't throw on) undefined", (t) => {
   const objectToMutate = undefined;
   const valueToSet = 'same';
+  // @ts-expect-error TS should check this, but it's valid in JS, hence the test.
   setAll(objectToMutate, valueToSet);
 
   t.is(objectToMutate, undefined);
