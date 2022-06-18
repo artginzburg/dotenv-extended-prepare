@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 /**
  * Currently unused, readFilesQueued is used instead.
@@ -14,4 +14,4 @@ function readFiles(fileNames) {
   return files;
 }
 
-module.exports = readFiles;
+export default readFiles;

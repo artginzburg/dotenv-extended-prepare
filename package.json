@@ -1,6 +1,6 @@
 {
   "name": "dotenv-extended-prepare",
-  "version": "1.2.3",
+  "version": "1.2.6",
   "description": "Auto-creating .env files based on .env.defaults and .env.schema from dotenv-extended",
   "license": "MIT",
   "repository": "artginzburg/dotenv-extended-prepare",
@@ -11,8 +11,7 @@
     "url": "https://ginzburg.art"
   },
   "files": [
-    "src/*",
-    "index.js"
+    "dist/*"
   ],
   "keywords": [
     "dotenv",
@@ -26,7 +25,7 @@
     "prepare"
   ],
   "bin": {
-    "dotenv-extended-prepare": "./index.js"
+    "dotenv-extended-prepare": "./dist/index.js"
   },
   "engines": {
     "npm": ">=4",
@@ -34,12 +33,20 @@
   },
   "scripts": {
     "start": "cd test && ava --watch",
-    "test": "cd test && ava"
-  },
-  "devDependencies": {
-    "ava": "^4.0.1"
+    "test": "cd test && ava",
+    "lint": "eslint . --fix --ext .js,.cjs",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "cwait": "^1.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.42",
+    "ava": "^4.0.1",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "typescript": "^4.7.3"
   }
 }

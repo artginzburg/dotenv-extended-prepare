@@ -1,5 +1,5 @@
-const deepReadDir = require('./deepReadDir.js');
-const readFilesQueued = require('./readFilesQueued.js');
+import deepReadDir from './deepReadDir';
+import readFilesQueued from './readFilesQueued';
 
 const ignoredFilenames = [
   '.git',
@@ -8,9 +8,10 @@ const ignoredFilenames = [
   'package.json',
   'package-lock.json',
   '*/node_modules',
+  // TODO? Maybe shouldn't scan .json at all (like Babel source maps). Or maybe anything other than JS-like extensions. I think it's better to not exclude them by default, but leave a mention somewhere in the docs.
 ];
 
-async function findEnvVariables() {
+export async function findEnvVariables() {
   const files = await readDirFiles(process.cwd());
 
   const keysFound = {};
@@ -20,13 +21,38 @@ async function findEnvVariables() {
   }
 
   function addDestructuredEnvKeyToKeysFound(key) {
+    const [handledKey, value] = handleDestructuredDefaultValues(key);
+    setKeyValueOfKeysFound(
+      handleDestructuredRenaming(handleDestructuredPlainNewlines(handledKey)),
+      value,
+    );
+  }
+
+  function handleDestructuredDefaultValues(key) {
     const defaultValueDelimiter = '=';
     if (key.includes(defaultValueDelimiter)) {
       const [actualKey, value] = key.split(defaultValueDelimiter);
-      setKeyValueOfKeysFound(actualKey, value);
-      return;
+      return [actualKey, value];
     }
-    setKeyValueOfKeysFound(key);
+    return [key];
+  }
+
+  function handleDestructuredRenaming(possiblyRenamedKey) {
+    const renamingDelimiter = ':';
+    if (possiblyRenamedKey.includes(renamingDelimiter)) {
+      const [keyWithoutRename] = possiblyRenamedKey.split(renamingDelimiter);
+      return keyWithoutRename;
+    }
+    return possiblyRenamedKey;
+  }
+
+  /** Handles \n inside env keys of files like Babel .json source maps */
+  function handleDestructuredPlainNewlines(possiblyKeyWithNewline) {
+    const newlineCharacter = '\\n';
+    if (possiblyKeyWithNewline.includes(newlineCharacter)) {
+      return possiblyKeyWithNewline.replaceAll(newlineCharacter, '');
+    }
+    return possiblyKeyWithNewline;
   }
 
   function addClassicEnvKeyToKeysFound(key) {
@@ -35,11 +61,12 @@ async function findEnvVariables() {
 
   for (const key in files) {
     if (Object.hasOwnProperty.call(files, key)) {
-      const element = files[key];
-      console.log(`Matching ${key} with RegExps...`);
+      const element: string = files[key];
+      // console.log(`Matching ${key} with RegExps...`);
 
-      const destructured = element.matchAll(/\{(?<keyName>[^}]*)\}\s*=\s*process\.env(.*)+$/gm);
+      const destructured = element.matchAll(/\{(?<keyName>[^{}]*)\}\s*=\s*process\.env(.*)+$/gm);
       for (const {
+        // @ts-expect-error keyName exists. If it does not, then `destructured` would contain nothing, meaning that the loop wouldn't execute.
         groups: { keyName },
       } of destructured) {
         console.log('Found in destructuring:', keyName);
@@ -54,6 +81,7 @@ async function findEnvVariables() {
 
       const classic = element.matchAll(/process\.env\.(?<keyName>[\w\d]+)(.*)+$/gm);
       for (const {
+        // @ts-expect-error keyName exists. If it does not, then `destructured` would contain nothing, meaning that the loop wouldn't execute.
         groups: { keyName },
       } of classic) {
         console.log('Found in classic vars:', keyName);
@@ -80,7 +108,3 @@ function shouldExclude(fileName) {
   if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) return true; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
   return false;
 }
-
-module.exports = {
-  findEnvVariables,
-};

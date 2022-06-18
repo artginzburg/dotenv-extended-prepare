@@ -77,3 +77,9 @@ npx dotenv-extended-prepare generate
 I like high development convenience. Almost every new project has its .env schemas/examples/samples or defaults. Usually, after cloning a new repository, the developer has to not just enter environment variables, but also search for their names, check which ones are already set by default and create an .env file.
 
 This package is actively maintained. Give it a star, and maybe share some thoughts by opening an issue.
+
+## Caught a Bug?
+
+1. [Fork](https://help.github.com/articles/fork-a-repo/) this [repository](https://github.com/artginzburg/dotenv-extended-prepare/fork) to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device
+2. Link the package to the global module directory: `npm link`
+3. Within the Node app you want to test your local development instance of dotenv-extended-prepare, just link it to the dependencies: `npm link dotenv-extended-prepare` (Skip this step if you're using it via `npx` only). Instead of the default one from npm, Node.js will now use your clone of the tool!
