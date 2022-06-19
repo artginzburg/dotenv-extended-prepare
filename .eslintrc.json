@@ -6,19 +6,20 @@
   "extends": [
     "airbnb-base",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/strict"
     // "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module"
-    // "project": "./tsconfig.json"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
   "overrides": [
     {
-      "files": ["*.ts", "*.js", "*.cjs"]
+      "files": ["*.ts", "*.js"]
     }
   ], // this makes sure that all JS and TS files are linted
   "rules": {

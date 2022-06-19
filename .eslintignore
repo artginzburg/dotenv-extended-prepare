@@ -1,2 +1,5 @@
 # don't lint build output
 dist
+
+# don't lint configs
+ava.config.cjs

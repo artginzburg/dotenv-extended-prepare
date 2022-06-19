@@ -7,7 +7,7 @@ export function envStringifyInit<T>(envObj: Record<string, T>, preserveValues = 
         string += '# ';
       }
 
-      string += `${key}${key[0] === '#' ? '' : '='}${preserveValues ? envObj[key] : ''}\n`;
+      string += `${key}${key.startsWith('#') ? '' : '='}${preserveValues ? envObj[key] : ''}\n`;
     }
   }
 
