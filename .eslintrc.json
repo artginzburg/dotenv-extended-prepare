@@ -5,6 +5,7 @@
   },
   "extends": [
     "airbnb-base",
+    "airbnb-typescript/base",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/strict"
@@ -23,8 +24,6 @@
     "no-param-reassign": "off", // It is a useful feature if you know what you're doing.
     "no-restricted-syntax": "off", // for..in loops and similar iterators are just faster than array iterations.
     "import/prefer-default-export": "off", // I prefer to use named exports.
-    "import/extensions": "off", // this doesn't make sense in a project using modules.
-    "import/no-unresolved": "off", // This never works as expected for me. E.g. it says "Unable to resolve path to module 'ava'"
-    "no-use-before-define": ["error", "nofunc"] // functions are hoisted, so it's safe (from ESLint docs), and helps with readability.
+    "@typescript-eslint/no-use-before-define": ["error", "nofunc"] // functions are hoisted, so it's safe (from ESLint docs), and helps with readability.
   }
 }
