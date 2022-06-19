@@ -17,15 +17,9 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.js"]
-    }
-  ], // this makes sure that all JS and TS files are linted
   "rules": {
     "max-len": "off", // I don't care about line length
     "no-console": "off", // I need `console.log`s for CLI output, obviously.
-    "global-require": "off", // It is a bad practice, but it's OK until we move this package to ES modules.
     "no-param-reassign": "off", // It is a useful feature if you know what you're doing.
     "no-restricted-syntax": "off", // for..in loops and similar iterators are just faster than array iterations.
     "import/prefer-default-export": "off", // I prefer to use named exports.
