@@ -3,8 +3,8 @@ import fs from 'fs';
 /**
  * Currently unused, readFilesQueued is used instead.
  */
-function readFiles(fileNames) {
-  const files = {};
+function readFiles(fileNames: string[]) {
+  const files: Record<string, string> = {};
 
   for (const fileName of fileNames) {
     const file = fs.readFileSync(fileName, 'utf8');

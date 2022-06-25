@@ -8,7 +8,7 @@ const queue = new TaskQueue(Promise, 10);
 const read = queue.wrap(fsPromises.readFile);
 
 async function readFilesQueued(fileNames: string[]) {
-  const files = {};
+  const files: Record<string, Awaited<ReturnType<typeof read>>> = {};
 
   await Promise.all(
     fileNames.map(async (fileName) => {

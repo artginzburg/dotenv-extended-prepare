@@ -14,13 +14,14 @@ const ignoredFilenames = [
 export async function findEnvVariables() {
   const files = await readDirFiles(process.cwd());
 
-  const keysFound = {};
+  /** It's going to be a subset of `process.env` (not even the current version of it), so the type is not perfectly valid, but the closest to it. `NodeJS.ProcessEnv` would also not be valid here because if specifies some unnecessary values. */
+  const keysFound: Record<PropertyKey, PropertyKey> = {};
 
-  function setKeyValueOfKeysFound(key, value = '') {
+  function setKeyValueOfKeysFound(key: string, value = '') {
     keysFound[key.trim()] = value.trim();
   }
 
-  function addDestructuredEnvKeyToKeysFound(key) {
+  function addDestructuredEnvKeyToKeysFound(key: string) {
     const [handledKey, value] = handleDestructuredDefaultValues(key);
     setKeyValueOfKeysFound(
       handleDestructuredRenaming(handleDestructuredPlainNewlines(handledKey)),
@@ -28,7 +29,7 @@ export async function findEnvVariables() {
     );
   }
 
-  function handleDestructuredDefaultValues(key) {
+  function handleDestructuredDefaultValues(key: string) {
     const defaultValueDelimiter = '=';
     if (key.includes(defaultValueDelimiter)) {
       const [actualKey, value] = key.split(defaultValueDelimiter);
@@ -37,7 +38,7 @@ export async function findEnvVariables() {
     return [key];
   }
 
-  function handleDestructuredRenaming(possiblyRenamedKey) {
+  function handleDestructuredRenaming(possiblyRenamedKey: string) {
     const renamingDelimiter = ':';
     if (possiblyRenamedKey.includes(renamingDelimiter)) {
       const [keyWithoutRename] = possiblyRenamedKey.split(renamingDelimiter);
@@ -47,7 +48,7 @@ export async function findEnvVariables() {
   }
 
   /** Handles \n inside env keys of files like Babel .json source maps */
-  function handleDestructuredPlainNewlines(possiblyKeyWithNewline) {
+  function handleDestructuredPlainNewlines(possiblyKeyWithNewline: string) {
     const newlineCharacter = '\\n';
     if (possiblyKeyWithNewline.includes(newlineCharacter)) {
       return possiblyKeyWithNewline.replaceAll(newlineCharacter, '');
@@ -55,13 +56,13 @@ export async function findEnvVariables() {
     return possiblyKeyWithNewline;
   }
 
-  function addClassicEnvKeyToKeysFound(key) {
+  function addClassicEnvKeyToKeysFound(key: string) {
     setKeyValueOfKeysFound(key);
   }
 
   for (const key in files) {
     if (Object.hasOwnProperty.call(files, key)) {
-      const element: string = files[key];
+      const element = files[key] as string;
       // console.log(`Matching ${key} with RegExps...`);
 
       const destructured = element.matchAll(/\{(?<keyName>[^{}]*)\}\s*=\s*process\.env(.*)+$/gm);
@@ -95,15 +96,15 @@ export async function findEnvVariables() {
   return keysFound;
 }
 
-async function readDirFiles(directory) {
+async function readDirFiles(directory: string) {
   const fileNames = await deepReadDir(directory);
 
   const readerFunc = readFilesQueued; // TODO make this a class in the future, so that function that reads files can be really passed to constructor.
 
-  return readerFunc(fileNames.flat(Number.POSITIVE_INFINITY).filter((fileName) => !shouldExclude(fileName)));
+  return readerFunc((fileNames.flat(Number.POSITIVE_INFINITY) as string[]).filter((fileName) => !shouldExclude(fileName)));
 }
 
-function shouldExclude(fileName) {
+function shouldExclude(fileName: string) {
   if (ignoredFilenames.find((ignoredFilename) => ignoredFilename === fileName)) return true; // if fileName exactly matches any ignored one — skip it
   if (ignoredFilenames.some((ignoredFilename) => ignoredFilename.startsWith('*/') && fileName.includes(ignoredFilename.slice(2)))) return true; // if there's a directory wildcard in ignoredFilenames and fileName matches it — skip it // TODO make wildcards handled via regex
   return false;

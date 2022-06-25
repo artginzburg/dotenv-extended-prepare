@@ -3,7 +3,7 @@
   "compilerOptions": {
     "checkJs": true,
     "strictNullChecks": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "lib": ["ES2021"],
     "resolveJsonModule": true,
     "noUnusedLocals": true,
